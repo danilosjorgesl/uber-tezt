@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Central Danilo — Painel 10/10 até 15/07 v5</title>
+  <style>
+    :root{
+      --bg:#f6f7f4;
+      --card:#ffffff;
+      --card-soft:#fafaf7;
+      --text:#20231f;
+      --muted:#6b7167;
+      --line:#e3e6df;
+      --primary:#256d5a;
+      --primary-weak:#e7f4ef;
+      --blue:#2563eb;
+      --blue-weak:#eaf0ff;
+      --green:#1f7a4f;
+      --green-weak:#e8f6ee;
+      --yellow:#9a6500;
+      --yellow-weak:#fff5d9;
+      --red:#b42318;
+      --red-weak:#fee9e7;
+      --gray:#667085;
+      --gray-weak:#f1f3f0;
+      --shadow:0 10px 30px rgba(25,35,30,.07);
+      --radius:18px;
+      --radius-sm:12px;
+      --bottom:84px;
+      font-synthesis-weight:none;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      padding-bottom:calc(var(--bottom) + env(safe-area-inset-bottom));
+    }
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    .app{max-width:920px;margin:0 auto;min-height:100vh}
+    header{
+      position:sticky;top:0;z-index:20;
+      background:rgba(246,247,244,.96);
+      backdrop-filter: blur(12px);
+      padding:10px 14px 9px;
+      border-bottom:1px solid rgba(227,230,223,.7);
+    }
+    .topline{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    h1{font-size:18px;line-height:1.08;margin:0 0 2px;font-weight:900;letter-spacing:-.02em}
+    .subtitle{margin:0;color:var(--muted);font-size:12px;line-height:1.25}
+    .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:750;white-space:nowrap;border:1px solid var(--line);background:var(--card)}
+    .content{padding:14px 14px 24px}
+    .tab{display:none;animation:fade .16s ease-out}.tab.active{display:block}@keyframes fade{from{opacity:.6;transform:translateY(4px)}to{opacity:1;transform:none}}
+    .grid{display:grid;gap:10px}.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media(max-width:520px){.grid.two,.grid.three{grid-template-columns:1fr 1fr}.grid.one-mobile{grid-template-columns:1fr}.hide-mobile{display:none!important}}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-bottom:12px}
+    .card.soft{background:var(--card-soft);box-shadow:none}.card.compact{padding:12px}.section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 0 10px}.section-title h2,.section-title h3{margin:0;font-size:16px}.section-title p{margin:3px 0 0;color:var(--muted);font-size:13px}
+    .metric{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;min-height:88px;display:flex;flex-direction:column;justify-content:space-between}.metric .label{font-size:12px;color:var(--muted);font-weight:700}.metric .value{font-size:22px;font-weight:900;letter-spacing:-.03em;margin-top:8px;line-height:1}.metric .hint{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.25}.metric.primary{background:linear-gradient(180deg,#fff,#edf7f3);border-color:#cde7dd}.metric.warn{background:var(--yellow-weak);border-color:#f4d48d}.metric.danger{background:var(--red-weak);border-color:#f3b8b2}.metric.info{background:var(--blue-weak);border-color:#c9d7ff}.metric.good{background:var(--green-weak);border-color:#bddfc9}
+    .status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 9px;font-size:12px;font-weight:800}.status.good{background:var(--green-weak);color:var(--green)}.status.warn{background:var(--yellow-weak);color:var(--yellow)}.status.danger{background:var(--red-weak);color:var(--red)}.status.neutral{background:var(--gray-weak);color:var(--gray)}.status.info{background:var(--blue-weak);color:var(--blue)}
+    .btn{border:0;border-radius:14px;padding:11px 13px;font-size:14px;line-height:1.05;font-weight:900;background:var(--primary);color:white;display:inline-flex;justify-content:center;align-items:center;gap:7px;min-height:42px;text-align:center;white-space:nowrap;box-shadow:0 8px 18px rgba(37,109,90,.16);transition:transform .12s ease, box-shadow .12s ease, filter .12s ease}.btn:active{transform:translateY(1px);filter:saturate(.96)}.btn.secondary{background:linear-gradient(180deg,#fff,#f1f3f0);color:var(--text);border:1px solid var(--line);box-shadow:0 8px 18px rgba(25,35,30,.06)}.btn.warn{background:linear-gradient(180deg,#fff8df,#ffe9a9);color:var(--yellow);border:1px solid #edca77;box-shadow:0 8px 18px rgba(154,101,0,.12)}.btn.danger{background:linear-gradient(180deg,#fff0ee,#ffd3cf);color:var(--red);border:1px solid #efb3ac;box-shadow:0 8px 18px rgba(180,35,24,.12)}.btn.info{background:linear-gradient(180deg,#eef4ff,#dbe7ff);color:var(--blue);border:1px solid #c8d6ff;box-shadow:0 8px 18px rgba(37,99,235,.11)}.btn.good{background:linear-gradient(180deg,#effbf4,#d7f0e0);color:var(--green);border:1px solid #b6dbc2;box-shadow:0 8px 18px rgba(31,122,79,.12)}.btn.small{padding:8px 10px;min-height:34px;border-radius:11px;font-size:12px;box-shadow:none}.btn.block{width:100%}.btn:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}.btn .btn-ico{font-size:18px;line-height:1;display:inline-flex}.btn .btn-label{display:inline-block;white-space:nowrap}
+    .btn-row{display:flex;gap:8px;flex-wrap:wrap}.btn-row .btn{flex:1}.field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}.field label{font-size:13px;color:var(--muted);font-weight:750}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:14px;background:#fff;padding:12px 12px;color:var(--text);outline:none;min-height:44px}.field textarea{min-height:84px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:#9ac7b7;box-shadow:0 0 0 3px rgba(37,109,90,.12)}
+    .settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}@media(max-width:600px){.settings-grid{grid-template-columns:1fr 1fr}.settings-grid .wide{grid-column:1/-1}}
+    .list{display:flex;flex-direction:column;gap:10px}.item{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:12px}.item-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.item-title{font-weight:900;line-height:1.2}.item-meta{color:var(--muted);font-size:13px;margin-top:4px;line-height:1.35}.item-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.amount{font-weight:900;white-space:nowrap}.group-title{font-size:13px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:16px 4px 8px}.empty{padding:18px;border:1px dashed #ccd2c8;border-radius:16px;color:var(--muted);text-align:center;background:rgba(255,255,255,.55)}
+    .tabs-nav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:8px 10px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:center}.tabs-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;max-width:920px;width:100%}.tab-btn{border:0;background:transparent;color:var(--muted);border-radius:14px;padding:9px 4px;font-size:12px;font-weight:850;display:flex;flex-direction:column;align-items:center;gap:3px}.tab-btn .ico{font-size:18px;line-height:1}.tab-btn.active{background:var(--primary-weak);color:var(--primary)}
+    .modal-backdrop{position:fixed;inset:0;z-index:60;background:rgba(15,20,18,.45);display:none;align-items:flex-end;justify-content:center;padding:12px}.modal-backdrop.open{display:flex}.modal{background:var(--card);border-radius:24px;box-shadow:0 30px 70px rgba(0,0,0,.25);width:100%;max-width:560px;max-height:88vh;overflow:auto;padding:16px}.modal h3{margin:0 0 4px;font-size:18px}.modal p{margin:0 0 12px;color:var(--muted);font-size:13px}.modal .footer{display:flex;gap:8px;margin-top:12px}.modal .footer .btn{flex:1;white-space:normal;min-width:0}
+    .notice{border-radius:16px;padding:12px;border:1px solid var(--line);background:var(--gray-weak);font-size:13px;line-height:1.35;color:var(--text);margin-bottom:12px}.notice.warn{background:var(--yellow-weak);border-color:#f1d28c;color:#684500}.notice.danger{background:var(--red-weak);border-color:#efb3ac;color:#7a1b13}.notice.good{background:var(--green-weak);border-color:#b9dfc5;color:#15583a}.notice.info{background:var(--blue-weak);border-color:#c6d6ff;color:#1949a3}
+    .habit{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);background:var(--card);border-radius:14px}.habit input{width:20px;height:20px}.timeline{border-left:2px solid var(--line);margin-left:10px;padding-left:12px}.timeline-entry{position:relative;margin-bottom:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}.timeline-entry:before{content:"";position:absolute;left:-19px;top:16px;width:10px;height:10px;background:var(--primary);border-radius:50%;border:2px solid var(--bg)}.tiny{font-size:12px;color:var(--muted);line-height:1.35}.right{text-align:right}.divider{height:1px;background:var(--line);margin:12px 0}.nowrap{white-space:nowrap}.pill-input{display:flex;align-items:center;border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden}.pill-input span{padding-left:12px;color:var(--muted);font-weight:750}.pill-input input{border:0;border-radius:0;box-shadow:none!important;padding-left:6px}.danger-text{color:var(--red);font-weight:850}.green-text{color:var(--green);font-weight:850}.muted{color:var(--muted)}
+
+    .quick-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+    .quick-actions .btn{min-height:58px;border-radius:18px;padding:12px 8px;font-size:15px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .quick-actions .btn .btn-ico{font-size:20px}
+    .quick-actions .btn.primary-action{background:linear-gradient(180deg,#2f876f,#226a57);color:#fff;border:1px solid rgba(255,255,255,.22);box-shadow:0 12px 24px rgba(37,109,90,.22)}
+    .quick-actions .btn.wide{grid-column:1/-1}
+    .impact-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+    .impact-box{border:1px solid var(--line);border-radius:14px;background:var(--card-soft);padding:10px}
+    .impact-box strong{display:block;font-size:18px;letter-spacing:-.03em;line-height:1.05;margin-top:5px}
+    .impact-box span{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.03em}
+    details.clean{margin-bottom:12px}
+    details.clean summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;font-weight:900}
+    details.clean summary::-webkit-details-marker{display:none}
+    details.clean summary:after{content:'Abrir';font-size:12px;color:var(--muted);font-weight:800}
+    details.clean[open] summary:after{content:'Fechar'}
+    .priority-list .item{box-shadow:none}
+    .mini-plan{font-weight:850}
+    .mini-plan .tiny{font-weight:500;margin-top:4px}
+    @media(max-width:520px){.impact-grid{grid-template-columns:1fr}.quick-actions{grid-template-columns:1fr 1fr}.metric .value{font-size:21px}.content{padding-top:10px}}
+
+    @media(min-width:760px){.content{padding:18px 18px 40px}.desktop-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:12px;align-items:start}.modal-backdrop{align-items:center}.tabs-nav{padding-left:16px;padding-right:16px}.tab-btn{flex-direction:row;justify-content:center;font-size:13px}.tab-btn .ico{font-size:17px}}
+    @media print{.tabs-nav,header,.btn,.item-actions{display:none!important}body{background:white;padding:0}.app{max-width:none}.card,.item{box-shadow:none;break-inside:avoid}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="topline">
+        <div>
+          <h1>Central Danilo · até 15/07</h1>
+          <p class="subtitle">Caixa, prioridades, operação e rotina.</p>
+        </div>
+        <span class="badge" id="headerStatus">Carregando...</span>
+      </div>
+    </header>
+
+    <main class="content">
+      <section id="tab-hoje" class="tab active"></section>
+      <section id="tab-contas" class="tab"></section>
+      <section id="tab-operacao" class="tab"></section>
+      <section id="tab-resumo" class="tab"></section>
+    </main>
+  </div>
+
+  <nav class="tabs-nav" aria-label="Navegação principal">
+    <div class="tabs-inner">
+      <button class="tab-btn active" data-tab="hoje"><span class="ico">🏠</span><span>Hoje</span></button>
+      <button class="tab-btn" data-tab="contas"><span class="ico">💳</span><span>Contas</span></button>
+      <button class="tab-btn" data-tab="operacao"><span class="ico">🚕</span><span>Operação</span></button>
+      <button class="tab-btn" data-tab="resumo"><span class="ico">📋</span><span>Resumo</span></button>
+    </div>
+  </nav>
+
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  const STORAGE_KEY = 'central_danilo_painel_ate_1507_v1';
+  const APP_VERSION = 3;
+  const END_MONTH = 6; // Julho, zero-based
+  const END_DAY = 15;
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const endDate = new Date(currentYear, END_MONTH, END_DAY, 23, 59, 59);
+
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+  function uid(prefix='id'){
+    return prefix + '_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,8);
+  }
+  function isoDate(d=new Date()){
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth()+1).padStart(2,'0');
+    const dd = String(d.getDate()).padStart(2,'0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+  function isoDateTime(d=new Date()){
+    return d.toISOString();
+  }
+  function brDate(iso){
+    if(!iso) return 'sem data';
+    const [y,m,d] = iso.split('-').map(Number);
+    return `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}`;
+  }
+  function brDateTime(iso){
+    if(!iso) return '';
+    const d = new Date(iso);
+    return d.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+  }
+  function brTime(iso){
+    if(!iso) return '';
+    const d = new Date(iso);
+    return d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  }
+  function parseMoney(v){
+    if(v === null || v === undefined || v === '') return 0;
+    if(typeof v === 'number') return isFinite(v) ? v : 0;
+    let s = String(v).trim().replace(/\s/g,'');
+    if(!s) return 0;
+    s = s.replace(/[R$]/g,'');
+    if(s.includes(',') && s.includes('.')) s = s.replace(/\./g,'').replace(',', '.');
+    else if(s.includes(',')) s = s.replace(',', '.');
+    const n = Number(s);
+    return isFinite(n) ? n : 0;
+  }
+  function money(n){
+    return (Number(n)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+  }
+  function n2(n){return Math.round((Number(n)||0)*100)/100}
+  function clampPositive(n){return Math.max(0, n2(n))}
+  function daysLeftInclusive(){
+    const start = new Date(); start.setHours(0,0,0,0);
+    const end = new Date(endDate); end.setHours(0,0,0,0);
+    const diff = Math.floor((end - start)/(1000*60*60*24)) + 1;
+    return Math.max(1,diff);
+  }
+  function dueDate(monthDay){
+    const [day,month] = monthDay.split('/').map(Number);
+    return `${currentYear}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  }
+  function toast(msg, kind='info'){
+    const old = $('#toast'); if(old) old.remove();
+    const div = document.createElement('div');
+    div.id='toast';
+    div.className = `notice ${kind}`;
+    div.style.position='fixed';div.style.left='12px';div.style.right='12px';div.style.bottom='92px';div.style.zIndex='90';div.style.maxWidth='560px';div.style.margin='0 auto';div.style.boxShadow='var(--shadow)';
+    div.textContent = msg;
+    document.body.appendChild(div);
+    setTimeout(()=>div.remove(),3200);
+  }
+
+  const defaultState = () => ({
+    version: APP_VERSION,
+    createdAt: isoDateTime(),
+    settings: {
+      initialBalance: 0,
+      desiredSurplus: 500,
+      defaultGrossGoal: 600,
+      defaultNetGoal: 450,
+      endDate: `${currentYear}-07-15`,
+      userStarted: false
+    },
+    accounts: [
+      {id:uid('bill'), name:'Kovi 1', due:dueDate('29/06'), expected:993.90, priority:'critica', status:'aberta', note:'aproximado; confirmar valor final', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Kovi 2', due:dueDate('29/06'), expected:982.60, priority:'critica', status:'aberta', note:'aproximado; confirmar valor final', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Cunhada', due:dueDate('30/06'), expected:250.00, priority:'confirmar', status:'precisa_confirmar', note:'valor precisa confirmar', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Faccio', due:dueDate('30/06'), expected:260.12, priority:'critica', status:'aberta', note:'juros podem alterar', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'ARC4', due:dueDate('30/06'), expected:39.10, priority:'importante', status:'aberta', note:'', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Boticário', due:dueDate('30/06'), expected:109.52, priority:'importante', status:'aberta', note:'', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Unicesumar', due:dueDate('30/06'), expected:409.01, priority:'importante', status:'aberta', note:'', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Mercado', due:dueDate('30/06'), expected:500.00, priority:'familia', status:'aberta', note:'alimentação/família', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Mercado Pago', due:dueDate('02/07'), expected:64.65, priority:'importante', status:'aberta', note:'', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Kovi semanal', due:dueDate('03/07'), expected:903.00, priority:'critica', status:'aberta', note:'semanal', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Telefone', due:dueDate('05/07'), expected:409.00, priority:'importante', status:'aberta', note:'', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Internet', due:dueDate('05/07'), expected:99.90, priority:'nao_descontar', status:'nao_descontar', note:'mãe paga; aparece só como lembrete', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Transporte escolar', due:dueDate('10/07'), expected:400.00, priority:'confirmar', status:'precisa_confirmar', note:'valor precisa confirmar', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Pensão', due:dueDate('10/07'), expected:400.00, priority:'critica', status:'aberta', note:'', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Vivo', due:dueDate('10/07'), expected:150.00, priority:'confirmar', status:'precisa_confirmar', note:'valor médio/confirmar', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Claro', due:dueDate('10/07'), expected:60.00, priority:'importante', status:'aberta', note:'', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Kovi semanal', due:dueDate('10/07'), expected:903.00, priority:'critica', status:'aberta', note:'semanal', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Água', due:dueDate('15/07'), expected:280.00, priority:'importante', status:'aberta', note:'', paidTotal:0, payments:[]},
+      {id:uid('bill'), name:'Empréstimo Uber / risco de retenção', due:dueDate('15/07'), expected:0, priority:'critica', status:'precisa_confirmar', note:'alerta crítico: valor precisa confirmar; risco de retenção', paidTotal:0, payments:[]}
+    ],
+    incomes: [
+      {id:uid('inc'), name:'Entrada prevista mensal', due:dueDate('30/06'), amount:840, status:'prevista', receivedAt:null, note:'entrada recorrente dia 30'}
+    ],
+    operationLogs: [],
+    habits: {},
+    decisions: {},
+    cashAdjustments: []
+  });
+
+  let state = load();
+
+  function load(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return defaultState();
+      const parsed = JSON.parse(raw);
+      return migrate(parsed);
+    }catch(e){
+      console.warn(e); return defaultState();
+    }
+  }
+  function migrate(s){
+    const d = defaultState();
+    s.settings = Object.assign(d.settings, s.settings || {});
+    s.accounts = Array.isArray(s.accounts) ? s.accounts : d.accounts;
+    s.incomes = Array.isArray(s.incomes) ? s.incomes : d.incomes;
+    s.operationLogs = Array.isArray(s.operationLogs) ? s.operationLogs : [];
+    s.habits = s.habits || {};
+    s.decisions = s.decisions || {};
+    s.cashAdjustments = Array.isArray(s.cashAdjustments) ? s.cashAdjustments : [];
+    s.accounts.forEach(a=>{
+      if(a.name === 'Kovi 1' || a.name === 'Kovi 2') a.due = dueDate('29/06');
+      a.payments = Array.isArray(a.payments)?a.payments:[];
+      a.paidTotal = n2(a.payments.reduce((sum,p)=>sum+(Number(p.amount)||0),0));
+    });
+    s.version = APP_VERSION;
+    return s;
+  }
+  function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  function update(fn){ fn(state); save(); render(); }
+
+  function billRemaining(b){ return b.status === 'nao_descontar' ? 0 : clampPositive((Number(b.expected)||0) - (Number(b.paidTotal)||0)); }
+  function billOpenAmount(){ return state.accounts.reduce((sum,b)=>sum + (['paga','nao_descontar'].includes(b.status) ? 0 : billRemaining(b)),0); }
+  function expectedIncoming(){ return state.incomes.filter(i=>i.status !== 'recebida').reduce((s,i)=>s+(Number(i.amount)||0),0); }
+  function receivedIncome(){ return state.incomes.filter(i=>i.status === 'recebida').reduce((s,i)=>s+(Number(i.amount)||0),0); }
+  function paymentsTotal(){ return state.accounts.reduce((s,b)=>s+(Number(b.paidTotal)||0),0); }
+  function fuelTotal(){ return state.operationLogs.filter(l=>l.type==='fuel').reduce((s,l)=>s+(Number(l.amount)||0),0); }
+  function netOperationAdded(){
+    const byDay = {};
+    state.operationLogs.filter(l=>['partial','final'].includes(l.type)).forEach(l=>{
+      const day = l.date;
+      const val = Number(l.net)||0;
+      if(!byDay[day] || val > byDay[day]) byDay[day] = val;
+    });
+    return Object.values(byDay).reduce((s,v)=>s+v,0);
+  }
+  function cashCurrent(){
+    return n2((Number(state.settings.initialBalance)||0) + receivedIncome() + netOperationAdded() - paymentsTotal() - fuelTotal());
+  }
+  function needToProduceNet(){
+    return clampPositive(billOpenAmount() + (Number(state.settings.desiredSurplus)||0) - cashCurrent() - expectedIncoming());
+  }
+  function netGoalNeeded(){ return n2(needToProduceNet() / daysLeftInclusive()); }
+  function grossGoalNeeded(){ return n2(netGoalNeeded() / 0.75); }
+  function todayLogs(){ return state.operationLogs.filter(l=>l.date === isoDate()); }
+  function todayMax(field){
+    return todayLogs().reduce((m,l)=> Math.max(m, Number(l[field])||0), 0);
+  }
+  function todayNet(){ return todayMax('net'); }
+  function todayGross(){ return todayMax('uber') + todayMax('app99') + todayMax('cashPix'); }
+  function todayFuel(){ return todayLogs().filter(l=>l.type==='fuel').reduce((s,l)=>s+(Number(l.amount)||0),0); }
+  function todayNotWorked(){ return todayLogs().some(l=>l.type==='not_worked'); }
+  function daysNotWorked(){
+    return [...new Set(state.operationLogs.filter(l=>l.type==='not_worked').map(l=>l.date))].length;
+  }
+  function daysWorked(){
+    return [...new Set(state.operationLogs.filter(l=>['start','partial','final','fuel'].includes(l.type)).map(l=>l.date))].length;
+  }
+  function openBillsSorted(){
+    return state.accounts
+      .filter(b=>!['paga','nao_descontar'].includes(b.status) && billRemaining(b)>0)
+      .sort((a,b)=>(a.due||'9999').localeCompare(b.due||'9999') || priorityRank(a.priority)-priorityRank(b.priority) || String(a.name).localeCompare(String(b.name)));
+  }
+  function nextCriticalBill(){
+    return openBillsSorted()[0];
+  }
+  function addDaysIso(days){
+    const d = new Date();
+    d.setDate(d.getDate() + days);
+    return isoDate(d);
+  }
+  function priorityWindowBills(){
+    const today = isoDate();
+    const limit = addDaysIso(2);
+    const all = openBillsSorted();
+    const windowBills = all.filter(b => b.due && b.due <= limit);
+    return (windowBills.length ? windowBills : all.slice(0,4));
+  }
+  function priorityWindowTotal(){
+    return n2(priorityWindowBills().reduce((sum,b)=>sum+billRemaining(b),0));
+  }
+  function cashAfterPriorityWindow(){
+    return n2(cashCurrent() - priorityWindowTotal());
+  }
+  function pendingIncome(){
+    return state.incomes.filter(i=>i.status !== 'recebida').sort((a,b)=>(a.due||'9999').localeCompare(b.due||'9999'))[0];
+  }
+  function todayActionPlan(){
+    const priorityTotal = priorityWindowTotal();
+    const after = cashAfterPriorityWindow();
+    const netNeedToday = Math.max(Number(state.settings.defaultNetGoal)||450, netGoalNeeded());
+    const faltandoHoje = clampPositive(netNeedToday - todayNet());
+    if(priorityTotal && after < 0){
+      return {cls:'danger', title:'Ação principal', text:`As prioridades próximas somam ${money(priorityTotal)}. Se pagar tudo agora, falta ${money(Math.abs(after))}. Foque em produzir, pagar na ordem e proteger combustível.`};
+    }
+    if(faltandoHoje > 0){
+      return {cls:'warn', title:'Ação principal', text:`Ainda faltam ${money(faltandoHoje)} líquidos hoje. Lance parciais durante o dia e revise a decisão das 17:30.`};
+    }
+    return {cls:'good', title:'Ação principal', text:'Hoje está encaminhado. Pague a próxima prioridade com consciência e mantenha caixa para combustível.'};
+  }
+  function priorityRank(p){return ({critica:1,familia:2,importante:3,confirmar:4,nao_descontar:9}[p]||5)}
+  function isBillOverdue(b){
+    return !['paga','nao_descontar'].includes(b.status) && billRemaining(b)>0 && b.due && b.due < isoDate();
+  }
+  function isBillDueToday(b){
+    return !['paga','nao_descontar'].includes(b.status) && billRemaining(b)>0 && b.due && b.due === isoDate();
+  }
+  function billDisplayStatus(b){
+    if(isBillOverdue(b)) return 'vencida';
+    if(isBillDueToday(b)) return 'vence_hoje';
+    return b.status;
+  }
+  function billDueText(b){
+    if(isBillOverdue(b)) return 'Vencida em ' + brDate(b.due);
+    if(isBillDueToday(b)) return 'Vence hoje';
+    return 'Vence ' + brDate(b.due);
+  }
+  function weekStatus(){
+    const n = needToProduceNet();
+    const g = grossGoalNeeded();
+    const next = nextCriticalBill();
+    if(cashCurrent() < 0 || (next && next.due <= isoDate() && cashCurrent() < billRemaining(next))) return {label:'Crítico', cls:'danger'};
+    if(g > (Number(state.settings.defaultGrossGoal)||600) * 1.25 || n > 0) return {label:'Atenção', cls:'warn'};
+    return {label:'Seguro', cls:'good'};
+  }
+
+  function statusLabel(s){
+    return ({aberta:'Aberta',vencida:'Vencida',vence_hoje:'Vence hoje',paga:'Paga',parcial:'Parcial',adiada:'Adiada',precisa_confirmar:'Precisa confirmar',nao_descontar:'Não descontar',prevista:'Prevista',recebida:'Recebida'}[s]||s);
+  }
+  function statusClass(s){
+    return ({aberta:'warn',vencida:'danger',vence_hoje:'danger',paga:'good',parcial:'warn',adiada:'neutral',precisa_confirmar:'warn',nao_descontar:'neutral',prevista:'info',recebida:'good'}[s]||'neutral');
+  }
+  function priorityLabel(p){
+    return ({critica:'Crítica',familia:'Família',importante:'Importante',confirmar:'Confirmar',nao_descontar:'Não descontar'}[p]||p);
+  }
+
+  function render(){
+    const st = weekStatus();
+    $('#headerStatus').className = `badge status ${st.cls}`;
+    $('#headerStatus').textContent = st.label;
+    renderHoje(); renderContas(); renderOperacao(); renderResumo(); bindTabButtons();
+  }
+
+  function renderHoje(){
+    const priorityBills = priorityWindowBills();
+    const todayNetVal = todayNet();
+    const grossNeedToday = Math.max(Number(state.settings.defaultGrossGoal)||600, grossGoalNeeded());
+    const netNeedToday = Math.max(Number(state.settings.defaultNetGoal)||450, netGoalNeeded());
+    const faltaHoje = clampPositive(netNeedToday - todayNetVal);
+    const st = weekStatus();
+    const habits = getTodayHabits();
+    const decision = state.decisions[isoDate()] || {hit:'', action:'', note:''};
+    const priorityTotal = priorityWindowTotal();
+    const afterPriority = cashAfterPriorityWindow();
+    const plan = todayActionPlan();
+    const inc = pendingIncome();
+
+    $('#tab-hoje').innerHTML = `
+      ${!state.settings.userStarted ? setupNotice() : ''}
+      <div class="grid two">
+        <div class="metric primary"><div class="label">Caixa atual</div><div class="value">${money(cashCurrent())}</div><div class="hint">Dinheiro disponível projetado agora</div></div>
+        <div class="metric ${needToProduceNet()>0?'warn':'good'}"><div class="label">Falta até 15/07</div><div class="value">${money(needToProduceNet())}</div><div class="hint">Para pagar contas e sobrar ${money(state.settings.desiredSurplus)}</div></div>
+        <div class="metric info"><div class="label">Meta bruta hoje</div><div class="value">${money(grossNeedToday)}</div><div class="hint">Sugestão real pela semana</div></div>
+        <div class="metric good"><div class="label">Meta líquida hoje</div><div class="value">${money(netNeedToday)}</div><div class="hint">Valor que precisa entrar no caixa</div></div>
+        <div class="metric"><div class="label">Produzido líquido hoje</div><div class="value">${money(todayNetVal)}</div><div class="hint">Bruto hoje: ${money(todayGross())}</div></div>
+        <div class="metric ${faltaHoje>0?'warn':'good'}"><div class="label">Falta hoje</div><div class="value">${money(faltaHoje)}</div><div class="hint">Abastecido hoje: ${money(todayFuel())}</div></div>
+      </div>
+
+      <div class="card compact">
+        <div class="section-title"><div><h2>Painel de decisão rápida</h2><p>O que fazer agora, sem ficar caçando informação.</p></div><span class="status ${st.cls}">${st.label}</span></div>
+        <div class="notice ${plan.cls} mini-plan">${plan.title}<div class="tiny">${plan.text}</div></div>
+        <div class="impact-grid">
+          <div class="impact-box"><span>Prioridades próximas</span><strong>${money(priorityTotal)}</strong></div>
+          <div class="impact-box"><span>Após prioridades</span><strong class="${afterPriority<0?'danger-text':'green-text'}">${money(afterPriority)}</strong></div>
+          <div class="impact-box"><span>Entrada pendente</span><strong>${inc ? money(inc.amount) : '—'}</strong></div>
+        </div>
+        ${afterPriority<0 ? `<div class="tiny danger-text" style="margin-top:8px">Faltam ${money(Math.abs(afterPriority))} para pagar as prioridades próximas.</div>` : `<div class="tiny green-text" style="margin-top:8px">As prioridades próximas cabem no caixa atual.</div>`}
+        <div class="quick-actions">
+          <button class="btn primary-action" id="quickPartial"><span class="btn-ico">🚕</span><span class="btn-label">Parcial</span></button>
+          <button class="btn warn" id="quickFuel"><span class="btn-ico">⛽</span><span class="btn-label">Abastecer</span></button>
+          <button class="btn good" id="quickPay"><span class="btn-ico">💳</span><span class="btn-label">Pagar</span></button>
+          <button class="btn secondary" id="quickIncome"><span class="btn-ico">💰</span><span class="btn-label">Entrada</span></button>
+          <button class="btn danger wide" id="quickNotWorked"><span class="btn-ico">🛑</span><span class="btn-label">Não trabalhei hoje</span></button>
+        </div>
+      </div>
+
+      <div class="card compact">
+        <div class="section-title"><div><h2>Prioridades dos próximos 2 dias</h2><p>Vencidas, hoje e próximas. A lista completa fica em Contas.</p></div></div>
+        ${priorityBills.length ? `<div class="list priority-list">${priorityBills.map(b => `<div class="item compact"><div class="item-head"><div><div class="item-title">${escapeHtml(b.name)}</div><div class="item-meta">${billDueText(b)} · ${priorityLabel(b.priority)} · ${statusLabel(billDisplayStatus(b))}</div></div><div class="right"><div class="amount">${money(billRemaining(b))}</div><span class="status ${statusClass(billDisplayStatus(b))}">${statusLabel(billDisplayStatus(b))}</span></div></div></div>`).join('')}</div>` : `<div class="empty">Nenhuma conta aberta no período.</div>`}
+      </div>
+
+      <div class="desktop-grid">
+        <div>
+          <div class="card">
+            <div class="section-title"><div><h2>Decisão das 17:30</h2><p>Voltar, encerrar ou fazer bloco curto com consciência.</p></div></div>
+            <div class="grid two one-mobile">
+              <div class="field"><label>Meta mínima batida?</label><select id="decisionHit"><option value="">Selecionar</option><option ${decision.hit==='sim'?'selected':''} value="sim">Sim</option><option ${decision.hit==='parcial'?'selected':''} value="parcial">Parcial</option><option ${decision.hit==='nao'?'selected':''} value="nao">Não</option></select></div>
+              <div class="field"><label>Decisão tomada</label><select id="decisionAction"><option value="">Selecionar</option><option ${decision.action==='voltar'?'selected':''} value="voltar">Voltar para rua</option><option ${decision.action==='encerrar'?'selected':''} value="encerrar">Encerrar sem culpa</option><option ${decision.action==='bloco_curto'?'selected':''} value="bloco_curto">Fazer bloco curto</option><option ${decision.action==='familia'?'selected':''} value="familia">Resolver família/casa</option></select></div>
+            </div>
+            <div class="field"><label>Observação</label><textarea id="decisionNote" placeholder="Ex.: meta atrasada, volto até 21:00 sem virar noite infinita.">${escapeHtml(decision.note||'')}</textarea></div>
+            <button class="btn block" id="saveDecision">Salvar decisão de hoje</button>
+          </div>
+          <details class="card clean">
+            <summary>Guia do dia</summary>
+            <p class="tiny">Rotina base para não perder o eixo.</p>
+            <div class="list" style="margin-top:10px">
+              ${['04:00 — Levantar','04:30 — Sair para operação','07:00 — Pausa missão familiar','07:40 — Voltar para operação','16:45 — Buscar família','17:30 — Decisão crítica','Noite — Revisar caixa, contas e próxima prioridade'].map(t=>`<div class="item compact"><strong>${t}</strong></div>`).join('')}
+            </div>
+          </details>
+        </div>
+        <div>
+          <div class="card">
+            <div class="section-title"><div><h2>Hábitos mínimos</h2><p>Sem ranking. Só lembrete para sustentar o dia.</p></div></div>
+            <div class="list">
+              ${habitList().map(h=>`<label class="habit"><input type="checkbox" data-habit="${h.id}" ${habits[h.id]?'checked':''}><span>${h.label}</span></label>`).join('')}
+            </div>
+          </div>
+          <div class="notice ${todayNotWorked()?'warn':'info'}">${todayNotWorked() ? 'Hoje está marcado como dia não trabalhado. A meta perdida será redistribuída nos próximos dias.' : 'Use a aba Operação para lançar início, parciais, abastecimentos, final ou dia não trabalhado.'}</div>
+        </div>
+      </div>
+    `;
+    bindHoje();
+  }
+
+  function setupNotice(){
+    return `<div class="card">
+      <div class="section-title"><div><h2>Configuração inicial</h2><p>Coloque o saldo inicial para o caixa começar certo.</p></div></div>
+      <div class="settings-grid">
+        <div class="field"><label>Saldo inicial</label><div class="pill-input"><span>R$</span><input id="setupInitial" inputmode="decimal" value="${state.settings.initialBalance||''}" placeholder="0,00"></div></div>
+        <div class="field"><label>Sobra desejada em 15/07</label><div class="pill-input"><span>R$</span><input id="setupSurplus" inputmode="decimal" value="${state.settings.desiredSurplus}" placeholder="500,00"></div></div>
+        <div class="field"><label>Meta bruta padrão</label><div class="pill-input"><span>R$</span><input id="setupGross" inputmode="decimal" value="${state.settings.defaultGrossGoal}" placeholder="600,00"></div></div>
+        <div class="field"><label>Meta líquida padrão</label><div class="pill-input"><span>R$</span><input id="setupNet" inputmode="decimal" value="${state.settings.defaultNetGoal}" placeholder="450,00"></div></div>
+      </div>
+      <button class="btn block" id="saveSetup">Salvar configuração inicial</button>
+    </div>`;
+  }
+  function bindHoje(){
+    const saveSetup = $('#saveSetup');
+    if(saveSetup) saveSetup.onclick = () => update(s=>{
+      s.settings.initialBalance = parseMoney($('#setupInitial').value);
+      s.settings.desiredSurplus = parseMoney($('#setupSurplus').value);
+      s.settings.defaultGrossGoal = parseMoney($('#setupGross').value);
+      s.settings.defaultNetGoal = parseMoney($('#setupNet').value);
+      s.settings.userStarted = true;
+      toast('Configuração inicial salva.', 'good');
+    });
+    $$('.habit input').forEach(cb=> cb.onchange = () => update(s=>{
+      const day = isoDate();
+      s.habits[day] = s.habits[day] || {};
+      s.habits[day][cb.dataset.habit] = cb.checked;
+    }));
+    const sd = $('#saveDecision');
+    if(sd) sd.onclick = () => update(s=>{
+      s.decisions[isoDate()] = {hit:$('#decisionHit').value, action:$('#decisionAction').value, note:$('#decisionNote').value.trim(), savedAt: isoDateTime()};
+      toast('Decisão de hoje salva.', 'good');
+    });
+    const qp = $('#quickPartial'); if(qp) qp.onclick = () => setOperationType('partial');
+    const qf = $('#quickFuel'); if(qf) qf.onclick = () => setOperationType('fuel');
+    const qpay = $('#quickPay'); if(qpay) qpay.onclick = openFirstPriorityPay;
+    const qi = $('#quickIncome'); if(qi) qi.onclick = receiveNextIncome;
+    const qnw = $('#quickNotWorked'); if(qnw) qnw.onclick = () => setOperationType('not_worked');
+  }
+  function habitList(){
+    return [
+      {id:'agua',label:'Bebi água'}, {id:'comida',label:'Comi algo'}, {id:'banheiro',label:'Evitei celular no banheiro'},
+      {id:'respirar',label:'Alonguei/respirei 2 minutos'}, {id:'dinheiro',label:'Revisei dinheiro do dia'}, {id:'familia',label:'Dei atenção real para a família'}
+    ];
+  }
+  function getTodayHabits(){ return state.habits[isoDate()] || {}; }
+
+  function renderContas(){
+    const groups = groupAccounts();
+    $('#tab-contas').innerHTML = `
+      <div class="card">
+        <div class="section-title"><div><h2>Contas até 15/07</h2><p>Conta paga desconta o valor pago real, não o previsto.</p></div></div>
+        <div class="grid two">
+          <div class="metric warn"><div class="label">Aberto no período</div><div class="value">${money(billOpenAmount())}</div><div class="hint">Sem contar “não descontar”</div></div>
+          <div class="metric good"><div class="label">Já pago</div><div class="value">${money(paymentsTotal())}</div><div class="hint">Pagamentos registrados</div></div>
+        </div>
+        <div class="btn-row" style="margin-top:10px">
+          <button class="btn small info" id="addBill">+ Conta</button>
+          <button class="btn small good" id="addIncome">+ Entrada</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title"><div><h2>Entradas previstas</h2><p>Quando receber, soma no caixa.</p></div></div>
+        <div class="list">${state.incomes.length ? state.incomes.sort((a,b)=>a.due.localeCompare(b.due)).map(renderIncome).join('') : '<div class="empty">Nenhuma entrada cadastrada.</div>'}</div>
+      </div>
+      ${Object.entries(groups).map(([title, bills])=> bills.length ? `<div class="group-title">${title}</div><div class="list">${bills.map(renderBill).join('')}</div>` : '').join('')}
+    `;
+    bindContas();
+  }
+  function groupAccounts(){
+    const sorted = [...state.accounts].sort((a,b)=>(a.due||'9999').localeCompare(b.due||'9999') || priorityRank(a.priority)-priorityRank(b.priority));
+    const active = sorted.filter(b=>b.status!=='nao_descontar');
+    return {
+      'Vencidas': active.filter(isBillOverdue),
+      'Vencem hoje': active.filter(b=>isBillDueToday(b)),
+      'Críticas / muito próximas': active.filter(b=>!isBillOverdue(b) && !isBillDueToday(b) && (b.priority==='critica' || b.due <= dueDate('04/07'))),
+      '05/07 a 10/07': active.filter(b=>!isBillOverdue(b) && !isBillDueToday(b) && b.due >= dueDate('05/07') && b.due <= dueDate('10/07') && b.priority!=='critica'),
+      '11/07 a 15/07': active.filter(b=>!isBillOverdue(b) && !isBillDueToday(b) && b.due >= dueDate('11/07') && b.due <= dueDate('15/07') && b.priority!=='critica'),
+      'Não descontar / lembretes': sorted.filter(b=>b.status==='nao_descontar')
+    };
+  }
+  function renderBill(b){
+    const diff = n2((Number(b.paidTotal)||0) - (Number(b.expected)||0));
+    return `<div class="item" data-bill-id="${b.id}">
+      <div class="item-head">
+        <div>
+          <div class="item-title">${escapeHtml(b.name)}</div>
+          <div class="item-meta">${billDueText(b)} · ${priorityLabel(b.priority)}${b.note ? ' · '+escapeHtml(b.note) : ''}</div>
+        </div>
+        <div class="right">
+          <div class="amount">${money(billRemaining(b) || b.expected)}</div>
+          <span class="status ${statusClass(billDisplayStatus(b))}">${statusLabel(billDisplayStatus(b))}</span>
+        </div>
+      </div>
+      ${b.paidTotal ? `<div class="notice ${diff>0?'warn':'good'}" style="margin:10px 0 0">Pago: ${money(b.paidTotal)} ${diff>0 ? '· Diferença/juros: '+money(diff) : diff<0 ? '· Falta: '+money(Math.abs(diff)) : '· Sem diferença'}</div>` : ''}
+      <div class="item-actions">
+        <button class="btn small good payBill">Pagar</button>
+        <button class="btn small warn postponeBill">Adiar</button>
+        <button class="btn small secondary editBill">Editar</button>
+      </div>
+    </div>`;
+  }
+  function renderIncome(i){
+    return `<div class="item" data-income-id="${i.id}">
+      <div class="item-head"><div><div class="item-title">${escapeHtml(i.name)}</div><div class="item-meta">${brDate(i.due)}${i.note?' · '+escapeHtml(i.note):''}</div></div><div class="right"><div class="amount">${money(i.amount)}</div><span class="status ${statusClass(i.status)}">${statusLabel(i.status)}</span></div></div>
+      <div class="item-actions">
+        ${i.status==='recebida' ? '<button class="btn small secondary unreceiveIncome">Desmarcar</button>' : '<button class="btn small good receiveIncome">Recebi</button>'}
+        <button class="btn small secondary editIncome">Editar</button>
+      </div>
+    </div>`;
+  }
+  function bindContas(){
+    $('#addBill').onclick = () => openBillModal();
+    $('#addIncome').onclick = () => openIncomeModal();
+    $$('.payBill').forEach(btn=>btn.onclick=()=>openPayModal(btn.closest('[data-bill-id]').dataset.billId));
+    $$('.postponeBill').forEach(btn=>btn.onclick=()=>openPostponeModal(btn.closest('[data-bill-id]').dataset.billId));
+    $$('.editBill').forEach(btn=>btn.onclick=()=>openBillModal(btn.closest('[data-bill-id]').dataset.billId));
+    $$('.receiveIncome').forEach(btn=>btn.onclick=()=>update(s=>{ const i=s.incomes.find(x=>x.id===btn.closest('[data-income-id]').dataset.incomeId); if(i){i.status='recebida'; i.receivedAt=isoDateTime(); toast('Entrada recebida somada ao caixa.','good')} }));
+    $$('.unreceiveIncome').forEach(btn=>btn.onclick=()=>update(s=>{ const i=s.incomes.find(x=>x.id===btn.closest('[data-income-id]').dataset.incomeId); if(i){i.status='prevista'; i.receivedAt=null; toast('Entrada voltou para prevista.','info')} }));
+    $$('.editIncome').forEach(btn=>btn.onclick=()=>openIncomeModal(btn.closest('[data-income-id]').dataset.incomeId));
+  }
+
+  function renderOperacao(){
+    const last = getLastOperationalValues(isoDate());
+    const logs = [...todayLogs()].sort((a,b)=>a.createdAt.localeCompare(b.createdAt));
+    $('#tab-operacao').innerHTML = `
+      <div class="card">
+        <div class="section-title"><div><h2>Operação de hoje</h2><p>Diário com início, parciais, abastecimento, final e dia não trabalhado.</p></div></div>
+        <div class="grid two">
+          <div class="metric"><div class="label">Bruto acumulado</div><div class="value">${money(todayGross())}</div><div class="hint">Uber + 99 + dinheiro/Pix</div></div>
+          <div class="metric good"><div class="label">Líquido no caixa</div><div class="value">${money(todayNet())}</div><div class="hint">Acumulado do dia</div></div>
+          <div class="metric info"><div class="label">Km rodados</div><div class="value">${last.kmStart && last.km ? Math.max(0,n2(last.km-last.kmStart)).toLocaleString('pt-BR') : '—'}</div><div class="hint">Km final/atual menos inicial</div></div>
+          <div class="metric warn"><div class="label">Abastecido hoje</div><div class="value">${money(todayFuel())}</div><div class="hint">Descontado do caixa</div></div>
+        </div>
+      </div>
+
+      <div class="desktop-grid">
+        <div>
+          <div class="card">
+            <div class="section-title"><div><h2>Novo lançamento</h2><p>Escolha o tipo e salve com data/hora automática.</p></div></div>
+            <div class="field"><label>Tipo de lançamento</label><select id="opType"><option value="start">Início</option><option value="partial">Parcial</option><option value="fuel">Abastecimento</option><option value="final">Final</option><option value="not_worked">Dia não trabalhado</option></select></div>
+            <div id="opForm"></div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="section-title"><div><h2>Diário do dia</h2><p>${brDate(isoDate())}</p></div></div>
+            ${logs.length ? `<div class="timeline">${logs.map(renderLog).join('')}</div>` : '<div class="empty">Nenhum lançamento hoje ainda.</div>'}
+          </div>
+        </div>
+      </div>
+    `;
+    bindOperacao(); renderOpForm();
+  }
+  function getLastOperationalValues(date){
+    const logs = state.operationLogs.filter(l=>l.date===date).sort((a,b)=>a.createdAt.localeCompare(b.createdAt));
+    const res = {uber:0, app99:0, cashPix:0, net:0, km:0, kmStart:0, hours:0};
+    logs.forEach(l=>{
+      if(l.type==='start' && l.km){ res.kmStart = Number(l.km)||res.kmStart; if(!res.km) res.km = Number(l.km)||res.km; }
+      ['uber','app99','cashPix','net','hours'].forEach(k=>{ if(Number(l[k])>res[k]) res[k]=Number(l[k]); });
+      if(Number(l.km)>res.km) res.km=Number(l.km);
+    });
+    return res;
+  }
+  function renderLog(l){
+    const typeMap = {start:'Início', partial:'Parcial', fuel:'Abastecimento', final:'Final', not_worked:'Dia não trabalhado'};
+    let detail = '';
+    if(l.type==='start') detail = `Km inicial: ${l.km||'—'}`;
+    if(l.type==='partial' || l.type==='final') detail = `Bruto ${money((Number(l.uber)||0)+(Number(l.app99)||0)+(Number(l.cashPix)||0))} · Líquido caixa ${money(l.net||0)}${l.km?' · Km '+l.km:''}${l.hours?' · '+l.hours+'h':''}`;
+    if(l.type==='fuel') detail = `${money(l.amount)}${l.km?' · Km '+l.km:''}`;
+    if(l.type==='not_worked') detail = `Motivo: ${escapeHtml(l.reason||'não informado')}`;
+    return `<div class="timeline-entry"><div class="item-head"><div><strong>${brTime(l.createdAt)} — ${typeMap[l.type]||l.type}</strong><div class="item-meta">${detail}</div>${l.note?`<div class="tiny">${escapeHtml(l.note)}</div>`:''}</div><button class="btn small secondary deleteLog" data-log="${l.id}">Excluir</button></div></div>`;
+  }
+  function bindOperacao(){
+    $('#opType').onchange = renderOpForm;
+    $$('.deleteLog').forEach(btn=>btn.onclick=()=>confirmAction('Excluir lançamento?', 'Essa ação recalcula o caixa automaticamente.', ()=>update(s=>{s.operationLogs = s.operationLogs.filter(l=>l.id!==btn.dataset.log); toast('Lançamento excluído.','info')})));
+  }
+  function renderOpForm(){
+    const type = $('#opType')?.value || 'start';
+    const last = getLastOperationalValues(isoDate());
+    let html='';
+    if(type==='start') html = `<div class="field"><label>Km inicial do carro</label><input id="opKm" inputmode="decimal" placeholder="Ex.: 183420"></div><div class="field"><label>Observação</label><textarea id="opNote" placeholder="Ex.: saindo cedo para buscar a meta"></textarea></div><button class="btn block" id="saveOp">Salvar início</button>`;
+    if(type==='partial' || type==='final') html = `<div class="notice info">Valores acumulados do dia. Se lançar menor que a última parcial, o sistema vai avisar.</div><div class="grid two one-mobile"><div class="field"><label>Uber bruto acumulado</label><input id="opUber" inputmode="decimal" value="${last.uber||''}" placeholder="0,00"></div><div class="field"><label>99 bruto acumulado</label><input id="op99" inputmode="decimal" value="${last.app99||''}" placeholder="0,00"></div><div class="field"><label>Dinheiro/Pix acumulado</label><input id="opCash" inputmode="decimal" value="${last.cashPix||''}" placeholder="0,00"></div><div class="field"><label>Líquido acumulado no caixa</label><input id="opNet" inputmode="decimal" value="${last.net||''}" placeholder="0,00"></div><div class="field"><label>Km atual/final</label><input id="opKm" inputmode="decimal" value="${last.km||''}" placeholder="Ex.: 183650"></div><div class="field"><label>Horas trabalhadas</label><input id="opHours" inputmode="decimal" value="${last.hours||''}" placeholder="Ex.: 8,5"></div></div><div class="field"><label>Observação</label><textarea id="opNote" placeholder="Observação rápida"></textarea></div><button class="btn block ${type==='final'?'good':''}" id="saveOp">Salvar ${type==='final'?'final':'parcial'}</button>`;
+    if(type==='fuel') html = `<div class="field"><label>Valor abastecido</label><div class="pill-input"><span>R$</span><input id="opAmount" inputmode="decimal" placeholder="0,00"></div></div><div class="field"><label>Km atual opcional</label><input id="opKm" inputmode="decimal" value="${last.km||''}" placeholder="Ex.: 183590"></div><div class="field"><label>Observação</label><textarea id="opNote" placeholder="Ex.: abasteci para seguir até a noite"></textarea></div><button class="btn block warn" id="saveOp">Registrar abastecimento</button>`;
+    if(type==='not_worked') html = `<div class="notice warn">Dia não trabalhado não soma nada no caixa e redistribui a meta para os próximos dias.</div><div class="field"><label>Motivo</label><select id="opReason"><option>Família</option><option>Saúde</option><option>Carro</option><option>Cansaço</option><option>Chuva</option><option>Organização</option><option>Outro</option></select></div><div class="field"><label>Observação</label><textarea id="opNote" placeholder="Ex.: precisei ficar em casa e organizar a rotina"></textarea></div><button class="btn block warn" id="saveOp">Registrar dia não trabalhado</button>`;
+    $('#opForm').innerHTML = html;
+    $('#saveOp').onclick = saveOperation;
+  }
+  function saveOperation(){
+    const type = $('#opType').value;
+    const day = isoDate();
+    const last = getLastOperationalValues(day);
+    const log = {id:uid('log'), type, date:day, createdAt:isoDateTime(), note:($('#opNote')?.value||'').trim()};
+    if(type==='start'){
+      log.km = parseMoney($('#opKm').value);
+      if(!log.km) return toast('Informe a quilometragem inicial.', 'warn');
+    }
+    if(type==='partial' || type==='final'){
+      log.uber = parseMoney($('#opUber').value); log.app99 = parseMoney($('#op99').value); log.cashPix = parseMoney($('#opCash').value); log.net = parseMoney($('#opNet').value); log.km = parseMoney($('#opKm').value); log.hours = parseMoney($('#opHours').value);
+      const problems = [];
+      [['uber','Uber'],['app99','99'],['cashPix','Dinheiro/Pix'],['net','Líquido'],['km','Km atual']].forEach(([k,label])=>{ if(log[k] && last[k] && log[k] < last[k]) problems.push(`${label}: novo ${formatByKey(k,log[k])} menor que último ${formatByKey(k,last[k])}`); });
+      if(problems.length){
+        openModal(`<h3>Conferir lançamento</h3><p>Existe valor menor que o último registro de hoje.</p><div class="notice danger">${problems.map(escapeHtml).join('<br>')}</div><div class="footer"><button class="btn secondary" data-close>Corrigir</button><button class="btn danger" id="forceSaveOp">Salvar mesmo assim</button></div>`);
+        $('#forceSaveOp').onclick = () => { closeModal(); pushLog(log); };
+        return;
+      }
+    }
+    if(type==='fuel'){
+      log.amount = parseMoney($('#opAmount').value); log.km = parseMoney($('#opKm').value);
+      if(!log.amount) return toast('Informe o valor abastecido.', 'warn');
+      if(log.km && last.km && log.km < last.km) return confirmAction('Km menor que o último registro', 'Confira se a quilometragem está correta. Quer salvar mesmo assim?', ()=>pushLog(log));
+    }
+    if(type==='not_worked'){
+      log.reason = $('#opReason').value;
+      if(todayLogs().length) return confirmAction('Já existem lançamentos hoje', 'Deseja marcar dia não trabalhado mesmo assim?', ()=>pushLog(log));
+    }
+    pushLog(log);
+  }
+  function pushLog(log){ update(s=>{ s.operationLogs.push(log); toast('Lançamento salvo no diário.','good'); }); }
+  function formatByKey(k,v){ return k==='km' ? String(v) : money(v); }
+
+  function renderResumo(){
+    const next = nextCriticalBill();
+    const text = makeSummaryText();
+    $('#tab-resumo').innerHTML = `
+      <div class="card">
+        <div class="section-title"><div><h2>Resumo até 15/07</h2><p>Copie e mande para revisão quando precisar.</p></div></div>
+        <div class="grid two">
+          <div class="metric primary"><div class="label">Caixa atual</div><div class="value">${money(cashCurrent())}</div><div class="hint">saldo real projetado</div></div>
+          <div class="metric warn"><div class="label">Falta produzir líquido</div><div class="value">${money(needToProduceNet())}</div><div class="hint">para pagar e sobrar ${money(state.settings.desiredSurplus)}</div></div>
+          <div class="metric info"><div class="label">Meta líquida por dia</div><div class="value">${money(netGoalNeeded())}</div><div class="hint">dias restantes: ${daysLeftInclusive()}</div></div>
+          <div class="metric info"><div class="label">Meta bruta sugerida</div><div class="value">${money(grossGoalNeeded())}</div><div class="hint">considerando 75% útil</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title"><div><h2>Configurações</h2><p>Ajuste metas, saldo inicial e sobra desejada.</p></div></div>
+        <div class="settings-grid">
+          <div class="field"><label>Saldo inicial</label><input id="cfgInitial" inputmode="decimal" value="${state.settings.initialBalance}"></div>
+          <div class="field"><label>Sobra desejada</label><input id="cfgSurplus" inputmode="decimal" value="${state.settings.desiredSurplus}"></div>
+          <div class="field"><label>Meta bruta padrão</label><input id="cfgGross" inputmode="decimal" value="${state.settings.defaultGrossGoal}"></div>
+          <div class="field"><label>Meta líquida padrão</label><input id="cfgNet" inputmode="decimal" value="${state.settings.defaultNetGoal}"></div>
+        </div>
+        <button class="btn block" id="saveCfg">Salvar configurações</button>
+      </div>
+      <div class="card">
+        <div class="section-title"><div><h2>Consolidado</h2><p>Principais números do período.</p></div></div>
+        <div class="list">
+          ${summaryLine('Entradas recebidas', money(receivedIncome()))}
+          ${summaryLine('Entradas previstas', money(expectedIncoming()))}
+          ${summaryLine('Produção líquida lançada', money(netOperationAdded()))}
+          ${summaryLine('Abastecimentos', money(fuelTotal()))}
+          ${summaryLine('Contas pagas', money(paymentsTotal()))}
+          ${summaryLine('Contas abertas', money(billOpenAmount()))}
+          ${summaryLine('Dias trabalhados', daysWorked())}
+          ${summaryLine('Dias não trabalhados', daysNotWorked())}
+          ${summaryLine('Prioridades próximas', money(priorityWindowTotal()))}
+          ${summaryLine('Caixa após prioridades', money(cashAfterPriorityWindow()))}
+          ${summaryLine('Próxima prioridade', next ? `${next.name} · ${money(billRemaining(next))} · ${brDate(next.due)}` : 'Nenhuma')}
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title"><div><h2>Copiar relatório</h2><p>Texto pronto para mandar no ChatGPT.</p></div></div>
+        <textarea id="summaryText" readonly>${escapeHtml(text)}</textarea>
+        <div class="btn-row" style="margin-top:10px"><button class="btn" id="copySummary">Copiar resumo</button><button class="btn secondary" id="exportBackup">Exportar backup</button><button class="btn secondary" id="importBackup">Importar backup</button><button class="btn danger" id="resetData">Resetar</button></div>
+        <input type="file" id="backupFile" accept="application/json" hidden>
+      </div>
+    `;
+    bindResumo();
+  }
+  function summaryLine(label,value){return `<div class="item compact"><div class="item-head"><div class="item-title">${label}</div><div class="amount">${value}</div></div></div>`}
+  function bindResumo(){
+    $('#saveCfg').onclick=()=>update(s=>{ s.settings.initialBalance=parseMoney($('#cfgInitial').value); s.settings.desiredSurplus=parseMoney($('#cfgSurplus').value); s.settings.defaultGrossGoal=parseMoney($('#cfgGross').value); s.settings.defaultNetGoal=parseMoney($('#cfgNet').value); s.settings.userStarted=true; toast('Configurações salvas.','good'); });
+    $('#copySummary').onclick=async()=>{ try{ await navigator.clipboard.writeText($('#summaryText').value); toast('Resumo copiado.','good'); } catch(e){ $('#summaryText').select(); document.execCommand('copy'); toast('Resumo selecionado/copiado.','good'); } };
+    $('#exportBackup').onclick=()=>{ const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`central-danilo-backup-${isoDate()}.json`; a.click(); URL.revokeObjectURL(a.href); };
+    $('#importBackup').onclick=()=>$('#backupFile').click();
+    $('#backupFile').onchange=(ev)=>{ const file=ev.target.files[0]; if(!file) return; const r=new FileReader(); r.onload=()=>{ try{ const imported=migrate(JSON.parse(r.result)); confirmAction('Importar backup?', 'Isso substituirá os dados atuais deste painel.', ()=>{ state=imported; save(); render(); toast('Backup importado.','good'); }); }catch(e){ toast('Arquivo inválido.','danger'); } }; r.readAsText(file); };
+    $('#resetData').onclick=()=>confirmAction('Resetar todos os dados?', 'Isso apaga contas editadas, pagamentos, operação e hábitos deste painel.', ()=>{ state=defaultState(); save(); render(); toast('Dados resetados.','warn'); });
+  }
+  function makeSummaryText(){
+    const openBills = state.accounts.filter(b=>!['paga','nao_descontar'].includes(b.status) && billRemaining(b)>0).sort((a,b)=>a.due.localeCompare(b.due));
+    const paidBills = state.accounts.filter(b=>(b.paidTotal||0)>0);
+    const next = nextCriticalBill();
+    const priorities = priorityWindowBills();
+    return `Central Danilo — Resumo até 15/07
+
+Caixa atual: ${money(cashCurrent())}
+Saldo inicial: ${money(state.settings.initialBalance)}
+Entradas recebidas: ${money(receivedIncome())}
+Entradas previstas: ${money(expectedIncoming())}
+Produção líquida lançada: ${money(netOperationAdded())}
+Abastecimentos: ${money(fuelTotal())}
+Contas pagas: ${money(paymentsTotal())}
+Contas abertas: ${money(billOpenAmount())}
+Sobra desejada em 15/07: ${money(state.settings.desiredSurplus)}
+
+Falta produzir líquido até 15/07: ${money(needToProduceNet())}
+Meta líquida necessária por dia: ${money(netGoalNeeded())}
+Meta bruta sugerida por dia: ${money(grossGoalNeeded())}
+
+Hoje:
+- Bruto acumulado: ${money(todayGross())}
+- Líquido no caixa: ${money(todayNet())}
+- Abastecido: ${money(todayFuel())}
+- Dia não trabalhado: ${todayNotWorked() ? 'sim' : 'não'}
+
+Prioridades próximas: ${money(priorityWindowTotal())}
+Caixa após pagar prioridades próximas: ${money(cashAfterPriorityWindow())}
+Próxima prioridade: ${next ? `${next.name} — ${brDate(next.due)} — ${money(billRemaining(next))}` : 'nenhuma'}
+
+Lista das prioridades próximas:
+${priorities.length ? priorities.map(b=>`- ${b.name}: ${brDate(b.due)} — falta ${money(billRemaining(b))} — ${statusLabel(billDisplayStatus(b))}`).join('\n') : '- nenhuma'}
+
+Contas pagas/parciais:
+${paidBills.length ? paidBills.map(b=>`- ${b.name}: pago ${money(b.paidTotal)} / previsto ${money(b.expected)} — ${statusLabel(billDisplayStatus(b))}`).join('\n') : '- nenhuma'}
+
+Contas abertas:
+${openBills.length ? openBills.map(b=>`- ${b.name}: ${brDate(b.due)} — falta ${money(billRemaining(b))} — ${statusLabel(billDisplayStatus(b))}`).join('\n') : '- nenhuma'}
+
+Dias trabalhados: ${daysWorked()}
+Dias não trabalhados: ${daysNotWorked()}
+
+Sem culpa, com clareza.`;
+  }
+
+  function openPayModal(id){
+    const b = state.accounts.find(x=>x.id===id); if(!b) return;
+    const remain = billRemaining(b) || b.expected || 0;
+    openModal(`<h3>Pagar conta</h3><p>${escapeHtml(b.name)} · previsto ${money(b.expected)}</p><div class="field"><label>Valor pago</label><div class="pill-input"><span>R$</span><input id="payAmount" inputmode="decimal" value="${remain}"></div></div><div class="field"><label>Observação</label><textarea id="payNote" placeholder="Ex.: juros, desconto, pagamento parcial"></textarea></div><div class="footer"><button class="btn secondary" data-close>Cancelar</button><button class="btn good" id="confirmPay">Confirmar pagamento</button></div>`);
+    $('#confirmPay').onclick=()=>{
+      const amount=parseMoney($('#payAmount').value); if(amount<=0) return toast('Informe o valor pago.','warn');
+      update(s=>{ const bill=s.accounts.find(x=>x.id===id); const payment={id:uid('pay'), amount, paidAt:isoDateTime(), note:$('#payNote').value.trim(), expectedAtPayment:bill.expected}; bill.payments.push(payment); bill.paidTotal=n2(bill.payments.reduce((sum,p)=>sum+(Number(p.amount)||0),0)); if(bill.status==='nao_descontar'){} else if(bill.expected && bill.paidTotal < bill.expected) bill.status='parcial'; else bill.status='paga'; toast('Pagamento registrado e descontado do caixa.','good'); });
+      closeModal();
+    };
+  }
+  function openPostponeModal(id){
+    const b = state.accounts.find(x=>x.id===id); if(!b) return;
+    openModal(`<h3>Adiar conta</h3><p>${escapeHtml(b.name)}</p><div class="field"><label>Nova data</label><input id="newDue" type="date" value="${b.due}"></div><div class="field"><label>Observação</label><textarea id="postNote" placeholder="Motivo do adiamento"></textarea></div><div class="footer"><button class="btn secondary" data-close>Cancelar</button><button class="btn warn" id="confirmPost">Adiar</button></div>`);
+    $('#confirmPost').onclick=()=>{ update(s=>{ const bill=s.accounts.find(x=>x.id===id); bill.due=$('#newDue').value||bill.due; bill.status=bill.paidTotal?'parcial':'adiada'; bill.note = [bill.note, $('#postNote').value.trim()].filter(Boolean).join(' | '); toast('Conta adiada.','warn'); }); closeModal(); };
+  }
+  function openBillModal(id){
+    const b = id ? state.accounts.find(x=>x.id===id) : {name:'',due:isoDate(),expected:0,priority:'importante',status:'aberta',note:''};
+    openModal(`<h3>${id?'Editar conta':'Nova conta'}</h3><p>Use para corrigir valores, datas ou cadastrar algo novo.</p><div class="field"><label>Nome</label><input id="billName" value="${escapeAttr(b.name)}"></div><div class="grid two one-mobile"><div class="field"><label>Vencimento</label><input id="billDue" type="date" value="${b.due}"></div><div class="field"><label>Valor previsto</label><input id="billExpected" inputmode="decimal" value="${b.expected||''}"></div></div><div class="grid two one-mobile"><div class="field"><label>Prioridade</label><select id="billPriority"><option value="critica">Crítica</option><option value="familia">Família</option><option value="importante">Importante</option><option value="confirmar">Confirmar</option><option value="nao_descontar">Não descontar</option></select></div><div class="field"><label>Status</label><select id="billStatus"><option value="aberta">Aberta</option><option value="precisa_confirmar">Precisa confirmar</option><option value="nao_descontar">Não descontar</option><option value="adiada">Adiada</option><option value="paga">Paga</option></select></div></div><div class="field"><label>Observação</label><textarea id="billNote">${escapeHtml(b.note||'')}</textarea></div><div class="footer"><button class="btn secondary" data-close>Cancelar</button>${id?'<button class="btn danger" id="deleteBill">Excluir</button>':''}<button class="btn" id="saveBill">Salvar</button></div>`);
+    $('#billPriority').value=b.priority||'importante'; $('#billStatus').value=b.status||'aberta';
+    $('#saveBill').onclick=()=>{ const payload={name:$('#billName').value.trim(),due:$('#billDue').value,expected:parseMoney($('#billExpected').value),priority:$('#billPriority').value,status:$('#billStatus').value,note:$('#billNote').value.trim()}; if(!payload.name) return toast('Informe o nome da conta.','warn'); update(s=>{ if(id){ Object.assign(s.accounts.find(x=>x.id===id), payload); } else s.accounts.push(Object.assign({id:uid('bill'),paidTotal:0,payments:[]}, payload)); toast('Conta salva.','good'); }); closeModal(); };
+    const del=$('#deleteBill'); if(del) del.onclick=()=>confirmAction('Excluir conta?', 'Pagamentos dessa conta também serão removidos.', ()=>{ update(s=>{s.accounts=s.accounts.filter(x=>x.id!==id); toast('Conta excluída.','warn');}); closeModal(); });
+  }
+  function openIncomeModal(id){
+    const i = id ? state.incomes.find(x=>x.id===id) : {name:'',due:isoDate(),amount:0,status:'prevista',note:''};
+    openModal(`<h3>${id?'Editar entrada':'Nova entrada'}</h3><div class="field"><label>Nome</label><input id="incName" value="${escapeAttr(i.name)}"></div><div class="grid two one-mobile"><div class="field"><label>Data</label><input id="incDue" type="date" value="${i.due}"></div><div class="field"><label>Valor</label><input id="incAmount" inputmode="decimal" value="${i.amount||''}"></div></div><div class="field"><label>Status</label><select id="incStatus"><option value="prevista">Prevista</option><option value="recebida">Recebida</option></select></div><div class="field"><label>Observação</label><textarea id="incNote">${escapeHtml(i.note||'')}</textarea></div><div class="footer"><button class="btn secondary" data-close>Cancelar</button>${id?'<button class="btn danger" id="deleteIncome">Excluir</button>':''}<button class="btn" id="saveIncome">Salvar</button></div>`);
+    $('#incStatus').value=i.status||'prevista';
+    $('#saveIncome').onclick=()=>{ const payload={name:$('#incName').value.trim(),due:$('#incDue').value,amount:parseMoney($('#incAmount').value),status:$('#incStatus').value,note:$('#incNote').value.trim(),receivedAt:$('#incStatus').value==='recebida' ? (i.receivedAt||isoDateTime()) : null}; if(!payload.name) return toast('Informe o nome da entrada.','warn'); update(s=>{ if(id){ Object.assign(s.incomes.find(x=>x.id===id), payload); } else s.incomes.push(Object.assign({id:uid('inc')}, payload)); toast('Entrada salva.','good'); }); closeModal(); };
+    const del=$('#deleteIncome'); if(del) del.onclick=()=>confirmAction('Excluir entrada?', 'Ela deixará de entrar no cálculo.', ()=>{ update(s=>{s.incomes=s.incomes.filter(x=>x.id!==id); toast('Entrada excluída.','warn');}); closeModal(); });
+  }
+
+  function goToTab(tab){
+    $$('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+    $$('.tab').forEach(t=>t.classList.toggle('active', t.id===`tab-${tab}`));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function setOperationType(type){
+    goToTab('operacao');
+    setTimeout(()=>{
+      const sel = $('#opType');
+      if(sel){ sel.value = type; renderOpForm(); }
+    }, 0);
+  }
+  function openFirstPriorityPay(){
+    const b = priorityWindowBills()[0] || nextCriticalBill();
+    if(!b) return toast('Nenhuma prioridade aberta para pagar.', 'info');
+    openPayModal(b.id);
+  }
+  function receiveNextIncome(){
+    const inc = pendingIncome();
+    if(!inc) return toast('Nenhuma entrada pendente.', 'info');
+    confirmAction('Marcar entrada recebida?', `${inc.name} — ${money(inc.amount)}`, ()=>update(s=>{
+      const item = s.incomes.find(x=>x.id===inc.id);
+      if(item){ item.status='recebida'; item.receivedAt=isoDateTime(); toast('Entrada recebida e somada ao caixa.', 'good'); }
+    }));
+  }
+
+  function bindTabButtons(){
+    $$('.tab-btn').forEach(btn=>{ btn.onclick = () => goToTab(btn.dataset.tab); });
+  }
+  function openModal(html){
+    const back=$('#modalBackdrop');
+    back.innerHTML = `<div class="modal">${html}</div>`;
+    back.classList.add('open');
+    back.onclick = (e)=>{ if(e.target===back || e.target.hasAttribute('data-close')) closeModal(); };
+    $$('[data-close]', back).forEach(b=>b.onclick=closeModal);
+  }
+  function closeModal(){ const back=$('#modalBackdrop'); back.classList.remove('open'); back.innerHTML=''; }
+  function confirmAction(title,msg,onYes){
+    openModal(`<h3>${escapeHtml(title)}</h3><p>${escapeHtml(msg)}</p><div class="footer"><button class="btn secondary" data-close>Cancelar</button><button class="btn danger" id="confirmYes">Confirmar</button></div>`);
+    $('#confirmYes').onclick=()=>{ closeModal(); onYes(); };
+  }
+
+  function escapeHtml(str){ return String(str??'').replace(/[&<>'"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+  function escapeAttr(str){ return escapeHtml(str).replace(/`/g,'&#96;'); }
+
+  render();
+})();
+</script>
+</body>
+</html>
